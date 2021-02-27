@@ -15,8 +15,8 @@ class Webpage:
 
 
     def get_webtext(self):
-        """ Returns the webtext from corresponding URL.
-        If webpage is not accessible the old webtext is returned """
+        """ Returns the current webtext from corresponding URL.
+        If webpage is not accessible the old webtext is returned instead """
         try:
             response = requests.get(self.url)
             soup = bs4.BeautifulSoup(response.text, 'lxml')
@@ -44,8 +44,8 @@ class Notifier:
         self.period = settings['monitoring period']
         self.t_status_report = settings['interval for status report']
         self.t_sleep = settings['time asleep']
-        self.notification_method = settings['notification method']
 
+        self.notification_method = settings['notification method']
         if self.notification_method == 'whatsapp':
             self.client = Client(client_info['account sid'], client_info['auth token'])
             self.from_whatsapp_number = client_info['sender']
@@ -56,13 +56,14 @@ class Notifier:
         self.last_report = time.time()
 
 
-    def add_page(self, url):
-        """ Add additional page to be monitored """
-        self.pages.append(Webpage(url))
+    def add_pages(self, *args):
+        """ Add additional page(s) you want to be monitored """
+        for url in args:
+            self.pages.append(Webpage(url))
 
 
     def look_up(self):
-        """ Return all webpages which webtext has changed """
+        """ Returns all webpages which webtext has changed """
         changed_pages = []
         for page in self.pages:
             if page.has_changed():
@@ -72,7 +73,7 @@ class Notifier:
 
     @staticmethod
     def gen_message(pages, title):
-        """ Generates and return a message.
+        """ Generates and returns a message.
         Change this function as you like. """
         datetime_ = datetime.fromtimestamp(time.time())
         message = '--- {0} --- \n{1}'.format(title, datetime_)
@@ -82,7 +83,7 @@ class Notifier:
 
     
     def report(self):
-        """ Creates and posts a report in the given interval """
+        """ Creates and submitts a report in the given interval """
         if time.time() - self.last_report > self.t_status_report:
             changed_pages = self.look_up()
             message = Notifier.gen_message(changed_pages, title='Status report')
@@ -91,7 +92,7 @@ class Notifier:
 
 
     def news(self):
-        """ Creates and posts a message if a webtext has changed """
+        """ Creates and submitts a message if a webtext has changed """
         changed_pages = self.look_up()
         if len(changed_pages) > 0:
             message = Notifier.gen_message(changed_pages, title='News')
@@ -99,7 +100,7 @@ class Notifier:
 
 
     def send(self, message):
-        """ Sends or prints the message passed """
+        """ Sends or prints the passed message """
         if self.notification_method == 'whatsapp':
             self.client.messages.create(body=message,
                                         from_=self.from_whatsapp_number,
@@ -109,7 +110,7 @@ class Notifier:
 
     
     def run(self):
-        """ Run to notifier for given monitoring period """
+        """ Run notifier for given monitoring period """
         while time.time() - self.init_time < self.period:
             self.news()
             self.report()
@@ -123,8 +124,8 @@ if __name__ == '__main__':
     - interval for status report: send a notification in given interval
     - notification method: either 'terminal' or 'whatsapp' """
     settings = {'monitoring period': 24*3600,  
-                'time asleep': 10,  
-                'interval for status report': 6*3600,  
+                'time asleep': 10,
+                'interval for status report': 2*3600,
                 'notification method': 'terminal'} 
     
     """ If you want to send a whatsapp message via twilio (see README for more) fill in these information 
@@ -141,10 +142,10 @@ if __name__ == '__main__':
     Omit the client_info if you don't have them or if you don't want to notify via whatsapp. """ 
     myPageHunter = Notifier(settings=settings, client_info=client_info)
     
-    """ Add pages you want to monitor """    
-    myPageHunter.add_page(url='https://github.com/')
-    myPageHunter.add_page(url='https://ethz.ch/en.html')
+    """ Add pages you want to monitor """   
+    pages_to_monitor = ('https://github.com/', 'https://ethz.ch/en.html')
+    myPageHunter.add_pages(*pages_to_monitor)
     
-    """ Run the notifier with given settings """    
+    """ Run the notifier """    
     myPageHunter.run()
 
