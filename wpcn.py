@@ -19,7 +19,7 @@ class Webpage:
         If webpage is not accessible the old webtext is returned instead """
         try:
             response = requests.get(self.url)
-            soup = bs4.BeautifulSoup(response.text, 'lxml')
+            soup = bs4.BeautifulSoup(response.text, 'html.parser')
             for script in soup(['script', 'style']):
                 script.extract()
             return soup.get_text()
@@ -143,7 +143,7 @@ if __name__ == '__main__':
     myPageHunter = Notifier(settings=settings, client_info=client_info)
     
     """ Add pages you want to monitor """   
-    pages_to_monitor = ('https://github.com/', 'https://ethz.ch/en.html')
+    pages_to_monitor = ('https://github.com/', 'https://en.wikipedia.org/wiki/Main_Page')
     myPageHunter.add_pages(*pages_to_monitor)
     
     """ Run the notifier """    
