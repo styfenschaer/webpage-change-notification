@@ -143,7 +143,7 @@ if __name__ == '__main__':
     myPageHunter = Notifier(settings=settings, client_info=client_info)
     
     """ Add pages you want to monitor """   
-    pages_to_monitor = ('https://github.com/', 'https://en.wikipedia.org/wiki/Main_Page')
+    pages_to_monitor = ['https://github.com/', 'https://en.wikipedia.org/wiki/Main_Page']
     myPageHunter.add_pages(*pages_to_monitor)
     
     """ Run the notifier """    
