@@ -15,7 +15,8 @@ class Webpage:
 
 
     def get_webtext(self):
-        """ Gets the webtext from corresponding URL """
+        """ Returns the webtext from corresponding URL.
+        If webpage is not accessible the old webtext is returned """
         try:
             response = requests.get(self.url)
             soup = bs4.BeautifulSoup(response.text, 'lxml')
