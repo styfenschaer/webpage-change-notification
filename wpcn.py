@@ -33,12 +33,10 @@ class Webpage:
 
 
 class Notifier:
-    """
-    Creates a notifier which either notifies via terminal or whatsapp. 
+    """ Creates a notifier which either notifies via terminal or whatsapp. 
     If you want to use whatsapp notification you need twilio: https://www.twilio.com/
     Regarding twilio, this video might be helpful: https://www.youtube.com/watch?v=98OewpG8-yw&ab_channel=Twilio
-    See README for more.
-    """
+    See README for more. """
     def __init__(self, settings, client_info=None):
         self.period = settings['monitoring period']
         self.t_status_report = settings['interval for status report']
@@ -71,10 +69,8 @@ class Notifier:
 
     @staticmethod
     def gen_message(pages, title):
-        """ 
-        Generates and return a message.
-        Change this function as you like.
-        """
+        """ Generates and return a message.
+        Change this function as you like. """
         datetime_ = datetime.fromtimestamp(time.time())
         message = '--- {0} --- \n{1}'.format(title, datetime_)
         for page in pages:
@@ -118,34 +114,28 @@ class Notifier:
 
 
 if __name__ == '__main__':
-    """ 
-    All times in seconds. Notification method is either 'terminal' or 'whatsapp' 
+    """ All times in seconds. Notification method is either 'terminal' or 'whatsapp' 
     - monitoring period: how long you want to run the notifier
     - time asleep: time interval to check the webpages for changes
     - interval for status report: send a notification in given interval
-    - notification method: either 'terminal' or 'whatsapp'
-    """
+    - notification method: either 'terminal' or 'whatsapp' """
     settings = {'monitoring period': 24*3600,  
                 'time asleep': 10,  
                 'interval for status report': 6*3600,  
                 'notification method': 'terminal'} 
     
-    """ 
-    If you want to send a whatsapp message via twilio (see README for more) fill in these information 
+    """ If you want to send a whatsapp message via twilio (see README for more) fill in these information 
     - account sid: your account sid
     - auth token: your auth token
     - sender: phone number of the sender (twilio)
-    - recipient: reciepient's number (yours)
-    """    
+    - recipient: reciepient's number (yours) """    
     client_info = {'account sid': '##################################',  
                    'auth token': '################################',  
                    'sender': 'whatsapp:+###########',  
                    'recipient': 'whatsapp:+###########'}  
                 
-    """ 
-    Inititialize the Notifier. 
-    Omit the client_info if you don't have them or if you don't want to notify via whatsapp.
-    """ 
+    """ Inititialize the Notifier. 
+    Omit the client_info if you don't have them or if you don't want to notify via whatsapp. """ 
     myPageHunter = Notifier(settings=settings, client_info=client_info)
     
     """ Add pages you want to monitor """    
