@@ -1,3 +1,5 @@
+# Author: Styfen Schaer <schaers@student.ethz.ch> 
+
 import bs4
 import requests
 import time
