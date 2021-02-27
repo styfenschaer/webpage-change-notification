@@ -7,7 +7,6 @@ from twilio.rest import Client
 
 class Webpage:
     """ Creates a webpage object which can be handled and monitored by the notifier """
-
     def __init__(self, url):
         self.url = url
         self.webtext = self.get_webtext()
@@ -40,7 +39,6 @@ class Notifier:
     Regarding twilio, this video might be helpful: https://www.youtube.com/watch?v=98OewpG8-yw&ab_channel=Twilio
     See README for more.
     """
-    
     def __init__(self, settings, client_info=None):
         self.period = settings['monitoring period']
         self.t_status_report = settings['interval for status report']
@@ -120,17 +118,29 @@ class Notifier:
 
 
 if __name__ == '__main__':
-    """ All times in seconds. Notification method is either 'terminal' or 'whatsapp' """
-    settings = {'monitoring period': 24*3600,  # how long you want to run the notifier
-                'time asleep': 10,  # time interval to check the webpages for changes
-                'interval for status report': 6*3600,  # send a notification in given interval
-                'notification method': 'terminal'}  # either 'terminal' or 'whatsapp'
+    """ 
+    All times in seconds. Notification method is either 'terminal' or 'whatsapp' 
+    - monitoring period: how long you want to run the notifier
+    - time asleep: time interval to check the webpages for changes
+    - interval for status report: send a notification in given interval
+    - notification method: either 'terminal' or 'whatsapp'
+    """
+    settings = {'monitoring period': 24*3600,  
+                'time asleep': 10,  
+                'interval for status report': 6*3600,  
+                'notification method': 'terminal'} 
     
-    """ If you want to send a whatsapp message via twilio (see README for more) fill in these information """    
-    client_info = {'account sid': '##################################',  # replace '###' by your account sid
-                   'auth token': '################################',  # replace '###' by your auth token
-                   'sender': 'whatsapp:+###########',  # replace '###' the phone number of the sender (twilio)
-                   'recipient': 'whatsapp:+###########'}  # replace '###' by the reciepient's number (yours)
+    """ 
+    If you want to send a whatsapp message via twilio (see README for more) fill in these information 
+    - account sid: your account sid
+    - auth token: your auth token
+    - sender: phone number of the sender (twilio)
+    - recipient: reciepient's number (yours)
+    """    
+    client_info = {'account sid': '##################################',  
+                   'auth token': '################################',  
+                   'sender': 'whatsapp:+###########',  
+                   'recipient': 'whatsapp:+###########'}  
                 
     """ 
     Inititialize the Notifier. 
