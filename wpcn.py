@@ -83,7 +83,7 @@ class Notifier:
 
     
     def report(self):
-        """ Creates and submitts a report in the given interval """
+        """ Creates and submits a report in the given interval """
         if time.time() - self.last_report > self.t_status_report:
             changed_pages = self.look_up()
             message = Notifier.gen_message(changed_pages, title='Status report')
@@ -92,7 +92,7 @@ class Notifier:
 
 
     def news(self):
-        """ Creates and submitts a message if a webtext has changed """
+        """ Creates and submits a message if a webtext has changed """
         changed_pages = self.look_up()
         if len(changed_pages) > 0:
             message = Notifier.gen_message(changed_pages, title='News')
